@@ -8,3 +8,7 @@ Then do ```source .venv/bin/activate``` (if on MacOS or Linux).
 
 Then ```pip install -r requirements.txt```
 
+Other references:
+- [Audio Source Separation with NMF](https://medium.com/@zahrahafida.benslimane/audio-source-separation-using-non-negative-matrix-factorization-nmf-a8b204490c7d)
+- [Audio Source Separation with NMF in PyTorch](https://gormatevosyan.com/audio-source-spearation-with-non-negative-matrix-factorization/)
+- [MATLAB Implementation of the Ding-Li-Jordan Convex NMF](https://github.com/colinvaz/nmf-toolbox/blob/master/convexnmf.m). The ```convexnmf.m``` file in this repo is actually broken I think
