@@ -2,6 +2,8 @@ Code for Convex Non-Negative Matrix Factorization based on [Ding-Li-Jordan Paper
 
 Python version: ```Python 3.10.5```
 
+Do ```git clone https://github.com/luoj21/enee469o_final_proj.git```
+
 Create a virtual environment: ```python -m venv .venv```
 
 Then do ```source .venv/bin/activate``` (if on MacOS or Linux).
