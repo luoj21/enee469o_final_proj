@@ -38,7 +38,6 @@ def convex_nmf(X, r, tol, max_iter, random_state):
 
     m, n = X.shape
     residual_vector = np.zeros(max_iter)
-    eps = 1e-16
     XTX = X.T @ X
     XTX_pos, XTX_neg = separate_matrix(XTX)
 
@@ -59,7 +58,8 @@ def convex_nmf(X, r, tol, max_iter, random_state):
         G_denominator = (XTX_neg @ W) + (G @ W.T @ XTX_pos @ W)
 
         assert np.shape(G_numerator) == np.shape(G_denominator)
-        G = G * np.sqrt((G_numerator + eps) / (G_denominator + eps))
+        G = G * np.sqrt((G_numerator + np.finfo(float).eps) / (G_denominator + np.finfo(float).eps))
+        G = np.maximum(G, np.finfo(float).eps)
         G_T = G.T
 
         '''Update Convex Combination Matrix'''
@@ -67,8 +67,9 @@ def convex_nmf(X, r, tol, max_iter, random_state):
         W_denominator = (XTX_neg @ G) + (XTX_pos @ W @ G_T @ G)
 
         assert np.shape(W_numerator) == np.shape(W_denominator)
-        W = W * np.sqrt((W_numerator + eps) / (W_denominator + eps))
+        W = W * np.sqrt((W_numerator + np.finfo(float).eps) / (W_denominator + np.finfo(float).eps))
         W = W / np.sum(W, axis=0, keepdims=True)
+        W = np.maximum(W, np.finfo(float).eps)
 
         F = X @ W
         residual = 0.5 * np.linalg.norm(X - (F@G_T), 'fro') ** 2
@@ -78,7 +79,7 @@ def convex_nmf(X, r, tol, max_iter, random_state):
             print(f'Relative error at iteration {i}: {np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1])}')
 
 
-        if i > 1 and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1]) < tol:
+        if i > 1 and residual_vector[i-1] > residual_vector[i] and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1] + np.finfo(float).eps) < tol:
             #print(check_kkt(X, G, W))
             residual_vector = residual_vector[0:i]
             print(f'Convergence achieved at iteration {i}...')
