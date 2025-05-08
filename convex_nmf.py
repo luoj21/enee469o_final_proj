@@ -1,3 +1,6 @@
+""" Author: Jason Luo"""
+
+
 import numpy as np
 from tqdm import tqdm
 from sklearn.cluster import KMeans
@@ -76,7 +79,8 @@ def convex_nmf(X, r, tol, max_iter, random_state):
         residual_vector[i] = residual 
 
         if i > 1 and i % 10 == 0:
-            print(f'Relative error at iteration {i}: {np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1])}')
+            pass
+            #print(f'Relative error at iteration {i}: {np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1])}')
 
 
         if i > 1 and residual_vector[i-1] > residual_vector[i] and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1] + np.finfo(float).eps) < tol:

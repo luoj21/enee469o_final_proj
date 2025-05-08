@@ -1,5 +1,5 @@
 ## ENEE469O - Introduction to Optimization Final Project Code
-Author: _Jason Luo_
+Authors: _Jason Luo_, _Denis Fon_
 
 
 Code for Convex Non-Negative Matrix Factorization based on [Ding-Li-Jordan Paper](https://people.eecs.berkeley.edu/~jordan/papers/ding-li-jordan-pami.pdf) and applications to single channel audio source separation.
