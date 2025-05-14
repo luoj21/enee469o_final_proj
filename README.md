@@ -20,3 +20,4 @@ Other references:
 - [MATLAB Implementation of the Ding-Li-Jordan Convex NMF](https://github.com/colinvaz/nmf-toolbox/blob/master/convexnmf.m). The ```convexnmf.m``` file in this repo is actually broken I think
 - [MATLAB NMFLibrary](https://github.com/hiroyuki-kasai/NMFLibrary/blob/master/solver/convex/convex_mu_nmf.m)
 - [Image Compression With NMF](https://github.com/akcarsten/Non_Negative_Matrix_Factorization)
+- [General paper on NMF](https://papers.nips.cc/paper\_files/paper/2000/hash/f9d1152547c0bde01830b7e8bd60024c-Abstract.html)
