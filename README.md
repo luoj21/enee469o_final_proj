@@ -21,3 +21,4 @@ Other references:
 - [MATLAB NMFLibrary](https://github.com/hiroyuki-kasai/NMFLibrary/blob/master/solver/convex/convex_mu_nmf.m)
 - [Image Compression With NMF](https://github.com/akcarsten/Non_Negative_Matrix_Factorization)
 - [General paper on NMF](https://papers.nips.cc/paper\_files/paper/2000/hash/f9d1152547c0bde01830b7e8bd60024c-Abstract.html)
+- [Convex analysis of NMF](https://linjianma.github.io/pdf/NMF_227B_final_report.pdf)
