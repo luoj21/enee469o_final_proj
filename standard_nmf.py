@@ -17,19 +17,23 @@ class StandardNMF:
         self.H = np.abs(np.random.rand(num_bases, V.shape[1]))
 
     def factorize(self):
+        # Make copy to avoid initial W and H overrwide
+        W = self.W.copy()
+        H = self.H.copy()
         residual_vector = np.zeros(self.n_iter)
+
         for i in tqdm(range(self.n_iter)):
             # Update H
-            numerator = self.W.T @ self.V
-            denominator = (self.W.T @ self.W @ self.H) + 1e-9
-            self.H *= numerator / denominator
+            numerator = W.T @ self.V
+            denominator = (W.T @ W @ H) + 1e-9
+            H *= numerator / denominator
 
             # Update W
-            numerator = self.V @ self.H.T
-            denominator = (self.W @ self.H @ self.H.T) + 1e-9
-            self.W *= numerator / denominator
+            numerator = self.V @ H.T
+            denominator = (W @ H @ H.T) + 1e-9
+            W *= numerator / denominator
 
-            residual = 0.5 * np.linalg.norm(self.V - (self.W @ self.H), 'fro') ** 2
+            residual = 0.5 * np.linalg.norm(self.V - (W @ H), 'fro') ** 2
             residual_vector[i] = residual
 
             if i > 1 and residual_vector[i-1] > residual_vector[i] and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1] + np.finfo(float).eps) < self.tol:
@@ -42,4 +46,4 @@ class StandardNMF:
             
 
 
-        return self.W, self.H, residual_vector
+        return W, H, residual_vector

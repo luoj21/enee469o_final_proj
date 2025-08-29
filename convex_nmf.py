@@ -52,7 +52,7 @@ class ConvexNMF():
         G = G_T.T.copy()
 
         for i in tqdm(range(0, self.max_iter)):
-            '''Update encoding matrix'''
+            #Update encoding matrix
             G_numerator = (self.XTX_pos @ W) + (G @ W.T @ self.XTX_neg @ W)
             G_denominator = (self.XTX_neg @ W) + (G @ W.T @ self.XTX_pos @ W)
 
@@ -61,7 +61,7 @@ class ConvexNMF():
             G = np.maximum(G, np.finfo(float).eps)
             G_T = G.T
 
-            '''Update Convex Combination Matrix'''
+            #Update Convex Combination Matrix
             W_numerator = (self.XTX_pos @ G) + (self.XTX_neg @ W @ G_T @ G)
             W_denominator = (self.XTX_neg @ G) + (self.XTX_pos @ W @ G_T @ G)
 
