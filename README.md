@@ -3,6 +3,16 @@ Authors: _Jason Luo_, _Denis Fon_
 
 Code for Convex Non-Negative Matrix Factorization based on [Ding-Li-Jordan Paper](https://people.eecs.berkeley.edu/~jordan/papers/ding-li-jordan-pami.pdf) with applications to image compression and single channel audio source separation.
 
+Given a non-negative matrix $$X$$, non-negative matrix factorization (NMF) attempts to factor $$X$$ into two non-negative matricies through minimizing the following objective:
+
+$$\|X - WH\|_F^{2} \quad \text{Subject to} \quad  W\geq 0,H\geq 0$$
+
+The objective of Convex NMF is formalized similarly:
+
+$$\|X - XWG^T\|_F^{2} \quad \text{Subject to} \quad  W\geq 0, G^T\geq 0$$
+
+Where $$F=XW$$ and the columns of $$F$$ are $$f_i = x_1w_1 + ... + x_nw_n$$, where $$w_i > 0$$
+
 -----
 
 Python version: ```Python 3.10.5```
