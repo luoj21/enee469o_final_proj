@@ -9,7 +9,7 @@ $$\lVert X - WH \rVert _F^{2} \quad \text{Subject to} \quad  W\geq 0,H\geq 0$$
 
 The objective of Convex NMF is formalized similarly:
 
-$$\|X - XWG^T\|_F^{2} \quad \text{Subject to} \quad  W\geq 0, G^T\geq 0$$
+$$\lVert X - XWG^T \rVert _F^{2} \quad \text{Subject to} \quad  W\geq 0, G^T\geq 0$$
 
 Where $$F=XW$$ and the columns of $$F$$ are $$f_i = x_1w_1 + ... + x_nw_n$$, where $$w_i > 0$$
 
