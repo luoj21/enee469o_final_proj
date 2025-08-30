@@ -5,7 +5,7 @@ Code for Convex Non-Negative Matrix Factorization based on [Ding-Li-Jordan Paper
 
 Given a non-negative matrix $$X$$, non-negative matrix factorization (NMF) attempts to factor $$X$$ into two non-negative matricies through minimizing the following objective:
 
-$$\|X - WH\|_F^{2} \quad \text{Subject to} \quad  W\geq 0,H\geq 0$$
+$$\lVert X - WH \rVert _F^{2} \quad \text{Subject to} \quad  W\geq 0,H\geq 0$$
 
 The objective of Convex NMF is formalized similarly:
 
