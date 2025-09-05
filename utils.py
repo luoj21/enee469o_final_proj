@@ -95,3 +95,25 @@ def separate_matrix(X):
     X_neg = 0.5 * (np.abs(X) - X)
 
     return X_pos, X_neg
+
+
+def calc_snr(x: np.ndarray, x_hat: np.ndarray):
+    """Calculates signal to noise ratio of a given signal based off:
+    
+    - J. L. Roux, S. Wisdom, H. Erdogan and J. R. Hershey, "SDR – Half-baked or Well Done?," ICASSP 2019 - 2019 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP), 
+    Brighton, UK, 2019, pp. 626-630, doi: 10.1109/ICASSP.2019.8683855. keywords: {speech enhancement;source separation;signal-to-noise-ratio;objective measure}
+    
+    Input:
+    - x: original signal
+    - x_hat: estimated, source separated signal
+    
+    Outputs:
+    - signal to noise ratio 10 * log10(x / x - x_hat)"""
+
+    
+
+    eps = np.finfo(float).eps
+    signal_power = (np.linalg.norm(x) ** 2) 
+    noise_power = (np.linalg.norm(x - x_hat) ** 2)
+
+    return 10 * np.log10(signal_power / (noise_power + eps))
