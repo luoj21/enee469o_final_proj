@@ -19,7 +19,7 @@ Python version: ```Python 3.10.5```
 
 - Do ```git clone https://github.com/luoj21/enee469o_final_proj.git```
 - Create a virtual environment: ```python -m venv .venv```
-- Then do ```source .venv/bin/activate``` (if on MacOS or Linux).
+- Then do ```source .venv/bin/activate```
 - Then ```pip install -r requirements.txt```
 - The necessary notebooks used to simulate the convex/standard NMF comparisons are in the ```analysis``` folder
 

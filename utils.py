@@ -37,7 +37,15 @@ def plot_confusion_matrix(y_true, y_pred, normalize=False, title='Confusion Matr
 
 
 def compute_sparsity(X):
-    """ Computes sparsity of a matrix by column average thresholding"""
+    """ Computes sparsity of a matrix by column average thresholding
+    
+    Inputs: 
+    - X: A m x n matrix
+
+    Outputs:
+    - X_sparse: X with small values zereoed out based on column-average thresholding
+    - num_non_zero: Number of non-zero elements remaining
+    """
 
     m, n = X.shape
     X_sparse = np.zeros((m, n))
@@ -46,10 +54,10 @@ def compute_sparsity(X):
         col = X[:, i]
         col_avg = np.mean(col)
         threshold = 0.001 * col_avg
-        
         X_sparse[:, i] = [0 if x < threshold else x for x in col]
 
-    return X_sparse, np.count_nonzero(X_sparse) / (m*n)
+    num_non_zero = np.count_nonzero(X_sparse) / (m*n)
+    return X_sparse, num_non_zero
 
 
 def initialize_kmeans(X, r, random_state):
@@ -65,21 +73,24 @@ def initialize_kmeans(X, r, random_state):
 
     m, n = X.shape
 
-    X_T = X.T
+    X_T = X.T   # Paper does clustering such that each column is a sample
     kmeans = KMeans(n_clusters=r, random_state=random_state)
     labels = kmeans.fit_predict(X_T)
 
-    H = np.zeros((n, r))
-    for i in range(n):
-        H[i, labels[i]] = 1
+    H = np.zeros((n, r)) # indicator matrix, where each column denotes if sample i belongs to cluster k
+    H[np.arange(n), labels] = 1
+ 
     E = np.ones((n, r))
     G = H + (0.2 * E)
 
     n_k = np.sum(H, axis=0)
-    Dn_inv = np.diag(1.0 / (n_k + 1e-10)) 
+    Dn_inv = np.diag(1.0 / (n_k + 1e-10))  # number of samples per cluster
     W = (H + (0.2 * E)) @ Dn_inv
+    W /= np.sum(W, axis=0, keepdims=True)
 
-    return W, G
+    centroids = X @ H @ Dn_inv
+
+    return W, G, centroids
 
 
 def separate_matrix(X):
@@ -110,7 +121,6 @@ def calc_snr(x: np.ndarray, x_hat: np.ndarray):
     Outputs:
     - signal to noise ratio 10 * log10(x / x - x_hat)"""
 
-    
 
     eps = np.finfo(float).eps
     signal_power = (np.linalg.norm(x) ** 2) 
