@@ -64,11 +64,10 @@ class ConvexNMF():
             W_denominator = (self.XTX_neg @ G) + (self.XTX_pos @ W @ G_T @ G)
 
             W = W * np.sqrt((W_numerator + np.finfo(float).eps) / (W_denominator + np.finfo(float).eps))
-            W = W / np.sum(W, axis=0, keepdims=True) # Smoothen W and ensure numerical stability
             W = np.maximum(W, np.finfo(float).eps)
 
             F = self.X @ W
-            residual = 0.5 * np.linalg.norm(self.X - (F@G_T), 'fro') ** 2
+            residual = np.linalg.norm(self.X - (F@G_T), 'fro') ** 2
             residual_vector[i] = residual 
 
 

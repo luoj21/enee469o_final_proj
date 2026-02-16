@@ -32,6 +32,18 @@ class testUtils(unittest.TestCase):
         X_reconstr = X_pos - X_neg
         np.testing.assert_array_equal(X, X_reconstr)
 
+    
+    def test_compute_permuted_accuracy1(self):
+        cm = np.array([[30, 10], [40, 100]])
+        acc = compute_permuted_accuracy(cm)
+        self.assertEqual(acc, 130 / np.sum(cm))
+
+
+    def test_compute_permuted_accuracy2(self):
+        cm = np.array([[2, 100, 32], [4, 67, 90], [10, 1, 23]])
+        acc = compute_permuted_accuracy(cm)
+        self.assertEqual(acc, (100 + 90 + 10) / np.sum(cm))
+
 
 
 if __name__ == "__main__":

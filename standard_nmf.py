@@ -1,4 +1,5 @@
-""" Author: Denis Fon"""
+""" Author: Denis F.
+Revisions by Jason L."""
 
 import numpy as np
 
@@ -33,7 +34,7 @@ class StandardNMF:
             denominator = (W @ H @ H.T) + 1e-9
             W *= numerator / denominator
 
-            residual = 0.5 * np.linalg.norm(self.V - (W @ H), 'fro') ** 2
+            residual = np.linalg.norm(self.V - (W @ H), 'fro') ** 2
             residual_vector[i] = residual
 
             if i > 1 and residual_vector[i-1] > residual_vector[i] and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1] + np.finfo(float).eps) < self.tol:

@@ -5,10 +5,11 @@ import numpy as np
 
 from sklearn.metrics import confusion_matrix
 from sklearn.cluster import KMeans
+from munkres import Munkres
 
 
 
-def plot_confusion_matrix(y_true, y_pred, normalize=False, title='Confusion Matrix'):
+def plot_confusion_matrix(y_true, y_pred, plot = True, normalize=False, title='Confusion Matrix'):
     """
     Plots a confusion matrix using seaborn heatmap.
 
@@ -18,6 +19,9 @@ def plot_confusion_matrix(y_true, y_pred, normalize=False, title='Confusion Matr
     - labels: list of label names (optional)
     - normalize: if True, show percentages instead of raw counts
     - title: title of the plot
+
+    Outputs:
+    - cm: The resulting confusion matrix
     """
     cm = confusion_matrix(y_true, y_pred)
     
@@ -27,13 +31,16 @@ def plot_confusion_matrix(y_true, y_pred, normalize=False, title='Confusion Matr
     else:
         fmt = 'd'
     
-    plt.figure(figsize=(6, 4))
-    sns.heatmap(cm, annot=True, fmt=fmt, cmap='Blues')
-    plt.xlabel('Predicted Label')
-    plt.ylabel('True Label')
-    plt.title(title)
-    plt.tight_layout()
-    plt.show()
+    if plot:
+        plt.figure(figsize=(6, 4))
+        sns.heatmap(cm, annot=True, fmt=fmt, cmap='Blues')
+        plt.xlabel('Predicted Label')
+        plt.ylabel('True Label')
+        plt.title(title)
+        plt.tight_layout()
+        plt.show()
+
+    return cm
 
 
 def compute_sparsity(X):
@@ -71,7 +78,7 @@ def initialize_kmeans(X, r, random_state):
     - W: n x r feature matrix
     - G: n x r weight matrix """
 
-    m, n = X.shape
+    _, n = X.shape
 
     X_T = X.T   # Paper does clustering such that each column is a sample
     kmeans = KMeans(n_clusters=r, random_state=random_state)
@@ -85,8 +92,7 @@ def initialize_kmeans(X, r, random_state):
 
     n_k = np.sum(H, axis=0)
     Dn_inv = np.diag(1.0 / (n_k + 1e-10))  # number of samples per cluster
-    W = (H + (0.2 * E)) @ Dn_inv
-    W /= np.sum(W, axis=0, keepdims=True)
+    W = (H + (0.2 * E)) @ Dn_inv # Smoothen W
 
     centroids = X @ H @ Dn_inv
 
@@ -127,3 +133,28 @@ def calc_snr(x: np.ndarray, x_hat: np.ndarray):
     noise_power = (np.linalg.norm(x - x_hat) ** 2)
 
     return 10 * np.log10(signal_power / (noise_power + eps))
+
+
+def compute_permuted_accuracy(cm):
+    """Computes optimized permutation accuracy based off of confusion matrix
+    
+    Inputs:
+    - cm:  N x N confusion matrix
+    
+    Outputs:
+    - permuted_accuracy: The sum of the diagonal of the confusion matrix where the diagonal is maximized
+    after permutation"""
+
+    max_val = np.max(cm)
+    cost_mat = max_val - cm
+
+    munkres = Munkres()
+    idxs = munkres.compute(cost_mat)
+
+    sum = 0
+    for i, _ in enumerate(idxs):
+        sum += cm[idxs[i]]
+    
+    permuted_accuracy = sum / np.sum(cm)
+
+    return permuted_accuracy
