@@ -3,10 +3,11 @@ import numpy as np
 
 from utils import *
 from sklearn.cluster import KMeans
+from convex_nmf import ConvexNMF
 
 class testUtils(unittest.TestCase):
     
-    def test_initialize_kmeans(self):
+    def test_initialize_kmeans1(self):
         X = np.array([
         [1.3, 1.8, 4.8, 7.1, 5.0, 5.2, 8.0],
         [1.5, 6.9, 3.9, -5.5, -8.5, -3.9, -5.5],
@@ -21,6 +22,35 @@ class testUtils(unittest.TestCase):
         np.testing.assert_allclose(km.cluster_centers_, centroids.T, rtol=1e-8)
 
     
+    def test_initialize_kmeans2(self):
+        X = np.array([
+        [1.3, 1.8, 4.8, 7.1, 5.0, 5.2, 8.0],
+        [1.5, 6.9, 3.9, -5.5, -8.5, -3.9, -5.5],
+        [6.5, 1.6, 8.2, -7.2, -8.7, -7.9, -5.2],
+        [3.8, 8.3, 4.7, 6.4, 7.5, 3.2, 7.4],
+        [-7.3, -1.8, -2.1, 2.7, 6.8, 4.8, 6.2]
+        ])
+        
+        W, _, _ = initialize_kmeans(X, 2, 123)
+        all_postive = np.all(W > 0)
+        col_sums = np.sum(W, axis = 0).reshape(1,-1)
+
+        self.assertTrue(all_postive, "One of the matrix elements < 0")
+        np.testing.assert_allclose(col_sums, np.ones((1,2)))
+
+    
+    
+    def test_initialize_kmeans3(self):
+        X = np.random.rand(25,50)
+        W, _, _ = initialize_kmeans(X, 4, 112314)
+        all_postive = np.all(W > 0)
+        col_sums = np.sum(W, axis = 0).reshape(1,-1)
+
+        self.assertTrue(all_postive, "One of the matrix elements < 0")
+        np.testing.assert_allclose(col_sums, np.ones((1,4)))
+
+    
+    
     def test_separate_matrix(self):
         X = np.array([[1, -2, 3],
                       [-4, 5, -6],
@@ -33,16 +63,31 @@ class testUtils(unittest.TestCase):
         np.testing.assert_array_equal(X, X_reconstr)
 
     
+    
     def test_compute_permuted_accuracy1(self):
         cm = np.array([[30, 10], [40, 100]])
         acc = compute_permuted_accuracy(cm)
         self.assertEqual(acc, 130 / np.sum(cm))
 
 
+    
     def test_compute_permuted_accuracy2(self):
         cm = np.array([[2, 100, 32], [4, 67, 90], [10, 1, 23]])
         acc = compute_permuted_accuracy(cm)
         self.assertEqual(acc, (100 + 90 + 10) / np.sum(cm))
+
+    
+    
+    def test_convex_combination(self):
+        X = np.random.rand(50,50)
+        cnmf = ConvexNMF(X, 3, 1e-5,5000,1234)
+        _, W, _, _ = cnmf.factorize()
+        all_postive = np.all(W > 0)
+        col_sums = np.sum(W, axis = 0).reshape(1,-1)
+
+
+        self.assertTrue(all_postive, "One of the matrix elements < 0")
+        np.testing.assert_allclose(col_sums, np.ones((1,3)))
 
 
 

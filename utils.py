@@ -93,6 +93,7 @@ def initialize_kmeans(X, r, random_state):
     n_k = np.sum(H, axis=0)
     Dn_inv = np.diag(1.0 / (n_k + 1e-10))  # number of samples per cluster
     W = (H + (0.2 * E)) @ Dn_inv # Smoothen W
+    W = W / np.sum(W,axis = 0, keepdims=True) # Convex combination restriction
 
     centroids = X @ H @ Dn_inv
 

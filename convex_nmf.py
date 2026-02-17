@@ -64,6 +64,7 @@ class ConvexNMF():
             W_denominator = (self.XTX_neg @ G) + (self.XTX_pos @ W @ G_T @ G)
 
             W = W * np.sqrt((W_numerator + np.finfo(float).eps) / (W_denominator + np.finfo(float).eps))
+            W = W / np.sum(W,axis = 0, keepdims=True) # convex combination constraint
             W = np.maximum(W, np.finfo(float).eps)
 
             F = self.X @ W
