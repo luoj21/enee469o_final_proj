@@ -5,7 +5,7 @@ from tqdm import tqdm
 from utils import initialize_kmeans, separate_matrix
 
 class ConvexNMF():
-    def __init__(self, X, r, tol, max_iter, random_state):
+    def __init__(self, X, r, tol, max_iter, random_state, loss = "Euclidean"):
         """Convex NMF, where the objective is || X - XWG^T ||_{F}^2 where
         X: m x n
         W: n x r
@@ -39,8 +39,20 @@ class ConvexNMF():
         self.r = r
         self.tol = tol
         self.max_iter = max_iter
-    
-    
+        self.loss = loss
+
+
+    def loss_fn(self, X_est, eps = 1e-10):
+        """Pick objective loss fuction"""
+        if self.loss.lower() == "euclidean":
+            return np.linalg.norm(self.X - (X_est), 'fro') ** 2
+        elif self.loss.lower() == "kl":
+            X_est = np.maximum(X_est, eps)
+            X = np.maximum(self.X, eps)
+            return np.sum (X_est + self.X * (np.log(X) - np.log(X_est) - 1) )
+        else:
+            raise TypeError("Invalid loss function, must be either 'euclidean' or 'kl'")
+
     def factorize(self):
         """Factorize matrix X"""
         residual_vector = np.zeros(self.max_iter)
@@ -68,7 +80,7 @@ class ConvexNMF():
             W = np.maximum(W, np.finfo(float).eps)
 
             F = self.X @ W
-            residual = np.linalg.norm(self.X - (F@G_T), 'fro') ** 2
+            residual = self.loss_fn(X_est=F@G_T)
             residual_vector[i] = residual 
 
 

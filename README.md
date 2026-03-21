@@ -3,7 +3,7 @@ Authors: _Jason L._, _Denis F._
 
 Code for Convex Non-Negative Matrix Factorization based on [Ding-Li-Jordan Paper](https://people.eecs.berkeley.edu/~jordan/papers/ding-li-jordan-pami.pdf) with applications to image compression and single channel audio source separation.
 
-Given a non-negative matrix $$X$$, non-negative matrix factorization (NMF) attempts to factor $$X$$ into two non-negative matricies through minimizing the following objective:
+Given a non-negative matrix $$X$$, non-negative matrix factorization (NMF) attempts to factor $$X$$ into two non-negative matricies through minimizing the following standard objective:
 
 $$\lVert X - WH \rVert _F^{2} \quad \text{Subject to} \quad  W\geq 0,H\geq 0$$
 
@@ -31,5 +31,5 @@ References:
 - [Image Compression With NMF](https://github.com/akcarsten/Non_Negative_Matrix_Factorization)
 - [General paper on NMF](https://papers.nips.cc/paper\_files/paper/2000/hash/f9d1152547c0bde01830b7e8bd60024c-Abstract.html)
 - [Convex analysis of NMF](https://linjianma.github.io/pdf/NMF_227B_final_report.pdf)
-
+- [KL-Divergence for NMF](https://www.researchgate.net/publication/221080181_Kullback-Leibler_Divergence_for_Nonnegative_Matrix_Factorization?__cf_chl_tk=Q5fyUsEhA6sEHEs.0h_IhFaW7sX76qzZNZ.dFxpvhU0-1774103022-1.0.1.1-Tto_B60EXOIFzLyl1avKouEynrJWu0JdiWxzm0Sjt0Y)
 -----
