@@ -37,14 +37,16 @@ class StandardNMF:
             residual = np.linalg.norm(self.V - (W @ H), 'fro') ** 2
             residual_vector[i] = residual
 
-            if i > 1 and residual_vector[i-1] > residual_vector[i] and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1] + np.finfo(float).eps) < self.tol:
+            if i > 1 and residual_vector[i-1] > residual_vector[i] and self.relative_err(residual_vector[i], residual_vector[i-1]) < self.tol:
                 residual_vector = residual_vector[0:i]
                 print(f'Convergence achieved at iteration {i}...')
                 break
 
             if i == self.n_iter - 1:
                 print(f'{self.n_iter} Iterations completed...')
-            
-
 
         return W, H, residual_vector
+    
+    def relative_err(self, current, prev):
+        return np.abs(current - prev) / np.abs(np.maximum(current, prev) + np.finfo(float).eps)
+

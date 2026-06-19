@@ -85,7 +85,7 @@ class ConvexNMF():
 
 
             # Check relative error decrease
-            if i > 1 and residual_vector[i-1] > residual_vector[i] and np.abs(residual_vector[i] - residual_vector[i-1]) / np.abs(residual_vector[i-1] + np.finfo(float).eps) < self.tol:
+            if i > 1 and residual_vector[i-1] > residual_vector[i] and self.relative_err(residual_vector[i], residual_vector[i-1]) < self.tol:
                 residual_vector = residual_vector[0:i]
                 print(f'Convergence achieved at iteration {i}...')
                 break
@@ -94,3 +94,7 @@ class ConvexNMF():
                 print(f'{self.max_iter} Iterations completed...')
 
         return F, W, G_T, residual_vector
+    
+    def relative_err(self, current, prev):
+        """Computes relative error between iterations"""
+        return np.abs(current - prev) / np.abs(np.maximum(current, prev) + np.finfo(float).eps)
