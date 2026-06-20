@@ -15,6 +15,22 @@ Where $$\lVert . \rVert _F$$ denotes the Frobenius norm, $$F=XW$$, and the colum
 
 -----
 
+NMF has applications in genomics, natural language processing, and machine learning. Below is an example of NMF being used for image compression, which allows for more efficient storage of files without noticeably degrading visual quality
+
+<p align="center">
+  <img src="outputs/image_comp.png" width="400"/>
+</p>
+
+Audio source separation is another application of NMF. The mixture audio source $$y(t)$$ is typically defined as a combination of individual sources $$x_i(t)$$. In practice, NMF is used on the time-frequency representation of the mixture via the STFT.
+
+$$ y(t) = \sum_{i=1}^{N} x_i(t) \Rightarrow STFT(y(t)) = \sum_{i=1}^{N} STFT(x_i(t))$$
+
+<p align="center">
+  <img src="outputs/source_sep_plot.png" width="400"/>
+</p>
+
+-----
+
 Python version: ```Python 3.10.5```
 
 - Do ```git clone https://github.com/luoj21/enee469o_final_proj.git```
