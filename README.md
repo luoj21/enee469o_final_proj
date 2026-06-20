@@ -15,7 +15,7 @@ Where $$\lVert . \rVert _F$$ denotes the Frobenius norm, $$F=XW$$, and the colum
 
 -----
 
-NMF has applications in genomics, natural language processing, and machine learning. Below is an example of NMF being used for image compression, which allows for more efficient storage of files without noticeably degrading visual quality
+NMF has applications in genomics, natural language processing, and machine learning. Below is an example of NMF being used for image compression, which allows for more efficient storage of files without noticeably degrading visual quality.
 
 <p align="center">
   <img src="outputs/image_comp.png" width="700"/>
